@@ -373,7 +373,7 @@ The `rsync` `just` job is now `rsync -avp ./build/ rud.is:~/rud.is/w/rollup-vani
 
 Here's what our reduced version does (just over 20):
 
-<img src="../img/new-network.png" width="100%"/>
+<img src="img/new-network.png" width="100%"/>
 
 ### FIN
 

@@ -54,9 +54,9 @@ rollup-vanilla-webr
 ├── favicon.ico
 ├── img
 │   └── preview.png
-├── index.html <----------------------- This has been modified.
-├── justfile <------------------------- This has been modified.
-├── languages <------------------------ This is new!
+├── index.html # <--------------------- This has been modified.
+├── justfile # <----------------------- This has been modified.
+├── languages # <---------------------- This is new!
 │   ├── css.tmLanguage.json
 │   ├── html.tmLanguage.json
 │   ├── java.tmLanguage.json
@@ -69,13 +69,13 @@ rollup-vanilla-webr
 │   ├── shellscript.tmLanguage.json
 │   ├── typescript.tmLanguage.json
 │   └── xml.tmLanguage.json
-├── main.js <-------------------------- This has been modified.
+├── main.js # <------------------------ This has been modified.
 ├── md
 │   └── main.md
-├── package.json <--------------------- This is new!
+├── package.json # <------------------- This is new!
 ├── r.js
-├── renderers.js <--------------------- This has been modified.
-├── rollup.config.js <----------------- This is new!
+├── renderers.js # <------------------- This has been modified.
+├── rollup.config.js # <--------------- This is new!
 ├── themes
 │   └── ayu-dark.json
 ├── utils.js
@@ -281,38 +281,38 @@ import { rollupPluginHTML as html } from '@web/rollup-plugin-html';
 import copy from 'rollup-plugin-copy';
 
 export default [
-	{
-		
-		input: './main.js', // rollup will inspect this 
-		                    // and the entire tree of imports it relies on
-		output: {
-			dir: 'build',     // We're putting all the output files/dirs here
-			format: 'es'      // And we still want ES6 modules
-		},
-		
-		plugins: [
-			urlResolve({ // 👈🏼 see below the code
-				cacheManager: '.cache',
-				minify: true,
-			}),
-			html({ // 👈🏼 see below the code
-				input: 'index.html',
-				minify: true,
-			}),
-			copy({ // 👈🏼 see below the code
-				targets: [
-					{ src: 'dist/onig.wasm', dest: 'build/dist' },
-					{ src: 'md/**/*', dest: 'build/md' },
-					{ src: 'languages/**/*', dest: 'build/languages' },
-					{ src: 'themes/**/*', dest: 'build/themes' },
-					{ src: 'img/**/*', dest: 'build/img' },
-					{ src: '*.map', dest: 'build' },
-					{ src: 'favicon.ico', dest: 'build' },
-				]
-			})
-		]
-		
-	}
+  {
+    
+    input: './main.js', // rollup will inspect this 
+                        // and the entire tree of imports it relies on
+    output: {
+      dir: 'build',     // We're putting all the output files/dirs here
+      format: 'es'      // And we still want ES6 modules
+    },
+    
+    plugins: [
+      urlResolve({ // 👈🏼 see below the code
+        cacheManager: '.cache',
+        minify: true,
+      }),
+      html({ // 👈🏼 see below the code
+        input: 'index.html',
+        minify: true,
+      }),
+      copy({ // 👈🏼 see below the code
+        targets: [
+          { src: 'dist/onig.wasm', dest: 'build/dist' },
+          { src: 'md/**/*', dest: 'build/md' },
+          { src: 'languages/**/*', dest: 'build/languages' },
+          { src: 'themes/**/*', dest: 'build/themes' },
+          { src: 'img/**/*', dest: 'build/img' },
+          { src: '*.map', dest: 'build' },
+          { src: 'favicon.ico', dest: 'build' },
+        ]
+      })
+    ]
+    
+  }
 ];
 ```
 
@@ -329,6 +329,56 @@ rollup:
   rm -rf build/
   npx rollup --config # use the default config file
 ```
+After a `just rollup` we have a new `build/` directory!
 
+```console
+build
+├── assets
+│   └── style-5c0658bc.css
+├── dist
+│   └── onig.wasm
+├── favicon.ico
+├── img
+│   └── preview.png
+├── index.html
+├── languages
+│   ├── css.tmLanguage.json
+│   ├── html.tmLanguage.json
+│   ├── java.tmLanguage.json
+│   ├── javascript.tmLanguage.json
+│   ├── json.tmLanguage.json
+│   ├── markdown.tmLanguage.json
+│   ├── nginx.tmLanguage.json
+│   ├── python.tmLanguage.json
+│   ├── r.tmLanguage.json
+│   ├── shellscript.tmLanguage.json
+│   ├── typescript.tmLanguage.json
+│   └── xml.tmLanguage.json
+├── main.js
+├── md
+│   └── main.md
+├── themes
+│   └── ayu-dark.json
+├── webr-serviceworker.js.map
+└── webr-worker.js.map
+```
+
+You should poke at `main.js` and `index.html` to see how mangled they are.
+
+The `rsync` `just` job is now `rsync -avp ./build/ rud.is:~/rud.is/w/rollup-vanilla-webr/`: it is literally how i deployed what you're seeing.
+
+### Proving It's Better
+
+`https://rud.is/w/lit-webr-plot/` makes over 80 HTTP requests, with most hitting the jsdelivr CDN. The Network tab of DevTools scrolls too much to see it. 
+
+Here's what our reduced version does (just over 20):
+
+<img src="../img/new-network.png" width="100%"/>
+
+### FIN
+
+We are by no means finished with optimizing things, but this "rollup" thing can be a bit intimidating for folks who aren't JS natives.
+
+Hit up GH: <https://github.com/hrbrmstr/rollup-vanilla-webr> for the source and drop any issues if anything needs more explanation.
 
 <p style="text-align:center;margin-top:2rem;">Brought to you by @hrbrmstr</p>
