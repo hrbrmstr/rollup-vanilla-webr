@@ -21,7 +21,7 @@ serve-build:
 		--header "Cross-Origin-Embedder-Policy: require-corp" \
 		--header "Cross-Origin-Opener-Policy: same-origin" \
 		--header "Cross-Origin-Resource-Policy: cross-origin" \
-		--index index-r.html \
+		--index index.html \
 		build
 
 # sync to host

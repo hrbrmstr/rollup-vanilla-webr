@@ -1,7 +1,7 @@
 /* Basic reset */
 html {
   box-sizing: border-box;
-  font-size: 100%;
+  font-size: 1rem;
 	height: auto !important;
   padding-bottom: 700px !important;
 }
@@ -28,6 +28,7 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   margin: 0 0 1rem 0;
+	line-height: 1.5rem;
 }
 
 a {

@@ -1,6 +1,6 @@
 import urlResolve from 'rollup-plugin-url-resolve';
 import { rollupPluginHTML as html } from '@web/rollup-plugin-html';
-import { copy }  from '@web/rollup-plugin-copy';
+import copy from 'rollup-plugin-copy';
 
 export default [
 	{
@@ -18,12 +18,19 @@ export default [
 				minify: true,
 			}),
 			html({
-				input: 'index-r.html',
+				input: 'index.html',
 				minify: true,
 			}),
 			copy({
-				patterns: '**/*.{png,svg,json,md,ico,map,wasm}',
-				exclude: [ 'node_modules', 'dist', 'README.md', 'package.json', 'pacakge-lock.json', 'build' ]
+				targets: [
+					{ src: 'dist/onig.wasm', dest: 'build/dist' },
+					{ src: 'md/**/*', dest: 'build/md' },
+					{ src: 'languages/**/*', dest: 'build/languages' },
+					{ src: 'themes/**/*', dest: 'build/themes' },
+					{ src: 'img/**/*', dest: 'build/img' },
+					{ src: '*.map', dest: 'build' },
+					{ src: 'favicon.ico', dest: 'build' },
+				]
 			})
 		]
 		
